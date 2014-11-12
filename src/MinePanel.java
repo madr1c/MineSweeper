@@ -27,6 +27,9 @@ public class MinePanel extends JPanel implements Serializable {
     public MinePanel(MainFrame containingFrame, int height, int width, double pMine, int[] initialTime){
 
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+        //GroupLayout layout = new GroupLayout(this);
+        //this.setLayout(layout);
+
         this.containingFrame = containingFrame;
         this.won = false;
         this.ended = false;
@@ -36,9 +39,21 @@ public class MinePanel extends JPanel implements Serializable {
         this.initialTime = initialTime;
         this.amountFields = height * width;
         this.fields = new Field[height][width];
+
+       /* GroupLayout.SequentialGroup currentGroup = layout.createSequentialGroup();
+
+
+        GroupLayout.SequentialGroup currentGroup2 = layout.createSequentialGroup();
+
+        GroupLayout.Group temporaryGroup;
+        GroupLayout.Group temporaryGroup2;
+        */
+
         for(int y = 0; y <= height -1; y++) {
             JPanel panel = new JPanel();
-            panel.setLayout(new FlowLayout());
+            panel.setLayout(new FlowLayout(width));
+            //temporaryGroup = layout.createParallelGroup();
+            //temporaryGroup2 = layout.createParallelGroup();
             for (int x = 0; x <= width -1; x++) {
                 final Field parent = new Field(x, y, Math.random() < pMine);
                 final ObserverButton tmp = new ObserverButton("?");
@@ -75,12 +90,24 @@ public class MinePanel extends JPanel implements Serializable {
                 });
                 parent.addObserver(tmp);
                 this.fields[x][y] = parent;
+                //temporaryGroup.addComponent(tmp);
+                //temporaryGroup2.addComponent(tmp);
+
                 panel.add(tmp);
             }
             this.add(panel);
+            //currentGroup.addGroup(temporaryGroup);
+            //currentGroup2.addGroup(temporaryGroup2);
         }
+        //layout.setHorizontalGroup(currentGroup);
+        //layout.setVerticalGroup(currentGroup2);
+
+        this.repaint();
+        this.validate();
+        this.paintComponents(this.getGraphics());
+
         this.connectNeighbors();
-        containingFrame.startGame(this.initialTime);
+        this.containingFrame.startGame(this.initialTime);
     }
 
     private void connectNeighbors(){
@@ -121,13 +148,13 @@ public class MinePanel extends JPanel implements Serializable {
         this.ended = ended;
     }
 
-    @Override
-    public int getHeight() {
+    //@Override
+    public int getHeights() {
         return height;
     }
 
-    @Override
-    public int getWidth() {
+    //@Override
+    public int getWidths() {
         return width;
     }
 
@@ -176,11 +203,11 @@ public class MinePanel extends JPanel implements Serializable {
                     this.setIcon(null);
 
                 }
-                if (tmp == getAmountFields()) {
-                    setEnded(true);
-                    setWon(true);
-                    containingFrame.endGame(won);
-                }
+            }
+            if (tmp == getAmountFields()) {
+                setEnded(true);
+                setWon(true);
+                containingFrame.endGame(won);
             }
         }
 

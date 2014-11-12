@@ -56,9 +56,6 @@ public class Field extends Observable implements Serializable {
                         neighbor.open();
                     }
                 }
-            } else if(isMine()){
-                //Verloren
-
             }
             setChanged();
             notifyObservers();

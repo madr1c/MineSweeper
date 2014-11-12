@@ -20,12 +20,12 @@ public class MainFrame extends JFrame {
 
     private void initComponents(){
         this.setLayout(new BorderLayout());
-        this.add(controlInterface, BorderLayout.PAGE_END);
+        this.add(controlInterface, BorderLayout.SOUTH);
         this.add(mineField, BorderLayout.CENTER);
         this.pack();
         this.setResizable(false);
         this.setVisible(true);
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     public void endGame(boolean won){
@@ -66,7 +66,7 @@ public class MainFrame extends JFrame {
 
     public void resetGame(){
         this.controlInterface.stopTimer();
-        this.mineField = new MinePanel(this, mineField.getHeight(), mineField.getWidth(), mineField.getpMine(), new int[] {0, 0, 0});
+        this.mineField = new MinePanel(this, mineField.getHeights(), mineField.getWidths(), mineField.getpMine(), new int[] {0, 0, 0});
         this.add(mineField, BorderLayout.CENTER);
 
         this.controlInterface.resetTimer();
