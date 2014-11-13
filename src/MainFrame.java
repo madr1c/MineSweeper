@@ -12,11 +12,14 @@ public class MainFrame extends JFrame {
 
     public MainFrame (int height, int width, double pMine){
 
-        this.controlInterface = new ControlInterface(this, this.controller);
-        this.mineField = new MinePanel(this);
+        this.mineField = new MinePanel();
+        this.controlInterface = new ControlInterface();
         this.controller = new Controller(this, this.mineField, this.controlInterface, height, width, pMine);
+        controlInterface.initComponents(this.controller);
 
         this.initComponents();
+
+        this.controller.startGame();
 
     }
 

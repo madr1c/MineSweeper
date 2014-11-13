@@ -1,5 +1,4 @@
 import javax.swing.*;
-import java.awt.*;
 import java.io.*;
 
 /**
@@ -24,7 +23,6 @@ public class Controller {
     public void newGame(int height, int width, double pMine){
         this.game = new Game(height, width, pMine);
         this.mineField.init(this.game);
-        this.startGame();
     }
 
     public void endGame(boolean won){
@@ -73,7 +71,7 @@ public class Controller {
         this.controlInterface.startTimer(this.game.getInitialTime());
     }
 
-    public void laden() {
+    public void loadGame() {
         JFileChooser chooser = new JFileChooser();
         if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 
@@ -84,7 +82,6 @@ public class Controller {
                 ObjectInputStream ois = new ObjectInputStream(fis);
                 this.mineField=(MinePanel) ois.readObject();
                 ois.close();
-                this.game = mineField.getGame();
                 this.containingFrame.setMineField(this.mineField);
                 this.containingFrame.clear();
                 this.containingFrame.initComponents();
@@ -99,7 +96,7 @@ public class Controller {
 
     }
 
-    public void speichern() {
+    public void saveGame() {
         JFileChooser chooser = new JFileChooser();
         if (chooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
 
@@ -121,13 +118,7 @@ public class Controller {
         }
     }
 
-    // start Game
-
-    // stop Game
-
-    // reset Game
-
-    // load Game
-
-    // save Game
+    public void setControlInterface(ControlInterface controlInterface) {
+        this.controlInterface = controlInterface;
+    }
 }

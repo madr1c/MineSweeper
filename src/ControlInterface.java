@@ -1,4 +1,4 @@
-import com.sun.codemodel.internal.JFieldRef;
+
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,7 +10,6 @@ import java.awt.event.ActionListener;
  */
 public class ControlInterface extends JPanel {
 
-    private MainFrame containingFrame;
     private Timer timer;
     private JLabel timerLabel;
     private JLabel time;
@@ -21,9 +20,18 @@ public class ControlInterface extends JPanel {
     private int minutes;
     private int seconds;
 
-    public ControlInterface(final MainFrame containingFrame, final Controller controller){
+    public ControlInterface(Controller controller) {
+        
+        this.initComponents(controller);
 
-        this.containingFrame = containingFrame;
+    }
+
+    public ControlInterface(){
+        System.out.print("Call initComponents with a Controller to initialize this JPanel!");
+    }
+
+    public void initComponents(final Controller controller){
+
         int timerDelay = 1000;
         ActionListener timeActionListener =new ActionListener() {
             @Override
@@ -70,7 +78,19 @@ public class ControlInterface extends JPanel {
             }
         });
         loadButton = new JButton("Load");
+        loadButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                controller.loadGame();
+            }
+        });
         saveButton = new JButton("Save");
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                controller.saveGame();
+            }
+        });
         this.initPanel();
     }
 
@@ -84,6 +104,7 @@ public class ControlInterface extends JPanel {
         this.add(saveButton);
     }
 
+    @Deprecated
     public void resetTimer() {
 
         if(timer.isRunning())
@@ -125,17 +146,5 @@ public class ControlInterface extends JPanel {
 
         if(!timer.isRunning())
             timer.start();
-    }
-
-    public int getHours() {
-        return hours;
-    }
-
-    public int getMinutes() {
-        return minutes;
-    }
-
-    public int getSeconds() {
-        return seconds;
     }
 }

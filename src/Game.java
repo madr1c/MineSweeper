@@ -51,9 +51,11 @@ public class Game implements Serializable {
 
         for(int x = 0; x <= this.height -1; x++) {
             for (int y = 0; y <= this.width - 1; y++) {
-                this.fields[x][y] = new Field(x, y, Math.random() < pMine);
+                this.fields[x][y] = new Field(x, y, Math.random() < this.pMine);
             }
         }
+
+        connectNeighbors();
     }
 
     private void connectNeighbors(){

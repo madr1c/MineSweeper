@@ -17,7 +17,7 @@ public class MinePanel extends JPanel implements Serializable {
     JButton[][] buttons;
     private Game game;
 
-    public MinePanel(MainFrame containingFrame){
+    public MinePanel(){
 
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 

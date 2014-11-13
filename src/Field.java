@@ -1,11 +1,7 @@
-import javax.swing.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+
 import java.io.Serializable;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Observable;
-import javax.swing.SwingUtilities;
 
 /**
  * Created by alexander on 10/11/14.
