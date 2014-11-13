@@ -14,57 +14,37 @@ public class MinePanel extends JPanel implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private MainFrame containingFrame;
-    Field[][] fields;
-    private boolean won;
-    private boolean ended;
-    private int height;
-    private int width;
-    private double pMine;
-    private int amountFields;
-    private int[] initialTime;
+    JButton[][] buttons;
+    private Game game;
 
-    public MinePanel(MainFrame containingFrame, int height, int width, double pMine, int[] initialTime){
+    public MinePanel(MainFrame containingFrame){
 
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-        //GroupLayout layout = new GroupLayout(this);
-        //this.setLayout(layout);
 
-        this.containingFrame = containingFrame;
-        this.won = false;
-        this.ended = false;
-        this.height = height;
-        this.width = width;
-        this.pMine = pMine;
-        this.initialTime = initialTime;
-        this.amountFields = height * width;
-        this.fields = new Field[height][width];
+    }
 
-       /* GroupLayout.SequentialGroup currentGroup = layout.createSequentialGroup();
+    public void init(final Game game){
+        this.game = game;
+        this.buttons = new JButton[this.game.getHeight()][this.game.getWidth()];
 
+        for(Field[] row : game.getFields()){
 
-        GroupLayout.SequentialGroup currentGroup2 = layout.createSequentialGroup();
+            JPanel panel = new JPanel(new GridLayout());
 
-        GroupLayout.Group temporaryGroup;
-        GroupLayout.Group temporaryGroup2;
-        */
+            for(Field current : row){
 
-        for(int y = 0; y <= height -1; y++) {
-            JPanel panel = new JPanel();
-            panel.setLayout(new FlowLayout(width));
-            //temporaryGroup = layout.createParallelGroup();
-            //temporaryGroup2 = layout.createParallelGroup();
-            for (int x = 0; x <= width -1; x++) {
-                final Field parent = new Field(x, y, Math.random() < pMine);
+                final int x = current.getX();
+                final int y = current.getY();
+
                 final ObserverButton tmp = new ObserverButton("?");
                 tmp.setPreferredSize(new Dimension(60, 60));
                 tmp.addMouseListener(new MouseListener() {
                     @Override
                     public void mouseClicked(MouseEvent mouseEvent) {
                         if (SwingUtilities.isRightMouseButton(mouseEvent)) {
-                            parent.setMarked(!parent.isMarked());
+                            game.markField(x, y);
                         } else if (SwingUtilities.isLeftMouseButton(mouseEvent)) {
-                            parent.open();
+                            game.openField(x, y);
                         }
                     }
 
@@ -88,82 +68,20 @@ public class MinePanel extends JPanel implements Serializable {
 
                     }
                 });
-                parent.addObserver(tmp);
-                this.fields[x][y] = parent;
-                //temporaryGroup.addComponent(tmp);
-                //temporaryGroup2.addComponent(tmp);
-
+                current.addObserver(tmp);
+                this.buttons[x][y] = tmp;
                 panel.add(tmp);
             }
             this.add(panel);
-            //currentGroup.addGroup(temporaryGroup);
-            //currentGroup2.addGroup(temporaryGroup2);
         }
-        //layout.setHorizontalGroup(currentGroup);
-        //layout.setVerticalGroup(currentGroup2);
-
-        this.repaint();
-        this.validate();
-        this.paintComponents(this.getGraphics());
-
-        this.connectNeighbors();
-        this.containingFrame.startGame(this.initialTime);
     }
 
-    private void connectNeighbors(){
-        for (int i=0; i< this.fields.length; i++){
-            for (int j=0; j< this.fields[i].length; j++){
-                for (int iHelp=i-1; iHelp<=i+1; iHelp++){
-                    for (int jHelp=j-1; jHelp<=j+1; jHelp++){
-                        if (iHelp >= 0 && jHelp >= 0 &&
-                            iHelp < this.fields.length &&
-                            jHelp < this.fields[i].length
-                            && (iHelp != i || jHelp != j)
-                            ){
-                            this.fields[i][j].addNeighbor(fields[iHelp][jHelp]);
-                            }
-                        }
-                    }
-                }
-            }
+    public Game getGame() {
+        return game;
     }
 
-    public void resume(){
-
-    }
-
-    public boolean isWon() {
-        return won;
-    }
-
-    public void setWon(boolean won) {
-        this.won = won;
-    }
-
-    public boolean isEnded() {
-        return ended;
-    }
-
-    public void setEnded(boolean ended) {
-        this.ended = ended;
-    }
-
-    //@Override
-    public int getHeights() {
-        return height;
-    }
-
-    //@Override
-    public int getWidths() {
-        return width;
-    }
-
-    public double getpMine() {
-        return pMine;
-    }
-
-    public int getAmountFields() {
-        return amountFields;
+    public void clear(){
+        this.removeAll();
     }
 
     class ObserverButton extends JButton implements Observer {
@@ -175,18 +93,25 @@ public class MinePanel extends JPanel implements Serializable {
         public void update(Observable arg0, Object arg1) {
             Field field = (Field) arg0;
             int tmp = 0;
-            if(!isEnded()) {
+            //if(!isEnded()) {
                 if (field.isExploded()) {
-                    setEnded(true);
-                    setWon(false);
+                    game.setEnded(true);
+                    game.setWon(false);
                     this.setText("boom");
                     URL url = this.getClass().getResource("/" + "mine.png");
                     Image img = new ImageIcon(url).getImage();
                     Image newImg = img.getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH);
                     Icon captionPic = new ImageIcon(newImg);
                     setIcon(captionPic);
-
-                    containingFrame.endGame(won);
+                    for(Field[] row : game.fields){
+                        for(Field current : row){
+                            current.open();
+                            current.deleteObservers();
+                        }
+                    }
+                    game.setEnded(true);
+                    game.setWon(false);
+                    //containingFrame.endGame(won);
 
                 } else if (field.isMarked()) {
                     this.setText("!");
@@ -203,12 +128,18 @@ public class MinePanel extends JPanel implements Serializable {
                     this.setIcon(null);
 
                 }
-            }
-            if (tmp == getAmountFields()) {
-                setEnded(true);
-                setWon(true);
-                containingFrame.endGame(won);
-            }
+            //}
+//            if (tmp == getAmountFields()) {
+//                for(Field[] row : fields){
+//                    for(Field current : row){
+//                        current.open();
+//                       // current.deleteObservers();
+//                    }
+//                }
+//                setEnded(true);
+//                setWon(true);
+//                //containingFrame.endGame(won);
+//            }
         }
 
     }

@@ -19,9 +19,6 @@ public class Field extends Observable implements Serializable {
     private boolean mine;
     private boolean open;
     private boolean marked;
-    public boolean isExploded() {
-        return isOpen() && isMine();
-    }
     private ArrayList<Field> neighbors;
 
     public Field(int x, int y, boolean isMine){
@@ -60,6 +57,10 @@ public class Field extends Observable implements Serializable {
             setChanged();
             notifyObservers();
         }
+    }
+
+    public boolean isExploded() {
+        return isOpen() && isMine();
     }
 
     public boolean isMarked() {

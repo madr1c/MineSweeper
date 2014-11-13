@@ -21,7 +21,7 @@ public class ControlInterface extends JPanel {
     private int minutes;
     private int seconds;
 
-    public ControlInterface(final MainFrame containingFrame){
+    public ControlInterface(final MainFrame containingFrame, final Controller controller){
 
         this.containingFrame = containingFrame;
         int timerDelay = 1000;
@@ -66,7 +66,7 @@ public class ControlInterface extends JPanel {
         resetButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                containingFrame.resetGame();
+                controller.resetGame();
             }
         });
         loadButton = new JButton("Load");
