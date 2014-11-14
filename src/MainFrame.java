@@ -15,7 +15,7 @@ public class MainFrame extends JFrame {
         this.mineField = new MinePanel();
         this.controlInterface = new ControlInterface();
         this.controller = new Controller(this, this.mineField, this.controlInterface, height, width, pMine);
-        controlInterface.initComponents(this.controller);
+        this.controlInterface.initComponents(this.controller);
 
         this.initComponents();
 
@@ -26,16 +26,17 @@ public class MainFrame extends JFrame {
     public void initComponents(){
         this.setTitle("Minesweeper");
         this.setLayout(new BorderLayout());
-        this.add(controlInterface, BorderLayout.SOUTH);
-        this.add(mineField, BorderLayout.CENTER);
+        this.add(this.controlInterface, BorderLayout.SOUTH);
+        this.add(this.mineField, BorderLayout.CENTER);
         this.pack();
         this.setResizable(false);
         this.setVisible(true);
+        this.repaint();
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    public void clear(){
-        this.removeAll();
+    public void clear() {
+        this.getContentPane().removeAll();
     }
 
     public void setMineField(MinePanel mineField){

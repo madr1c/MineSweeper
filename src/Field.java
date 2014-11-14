@@ -55,6 +55,10 @@ public class Field extends Observable implements Serializable {
         }
     }
 
+    public void unmark(){
+        this.marked = false;
+    }
+
     public boolean isExploded() {
         return isOpen() && isMine();
     }

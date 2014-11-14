@@ -147,4 +147,20 @@ public class ControlInterface extends JPanel {
         if(!timer.isRunning())
             timer.start();
     }
+
+    public int[] getTime(){
+        return new int[] {this.hours, this.minutes, this.seconds};
+    }
+
+    public int getHours() {
+        return hours;
+    }
+
+    public int getMinutes() {
+        return minutes;
+    }
+
+    public int getSeconds() {
+        return seconds;
+    }
 }

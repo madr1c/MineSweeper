@@ -60,6 +60,7 @@ public class Controller {
     }
 
     public void startGame(){
+        System.out.println(Integer.toString(this.game.getInitialTime()[0]) + ":" + Integer.toString(this.game.getInitialTime()[1]) + ":" + Integer.toString(this.game.getInitialTime()[2]));
         this.controlInterface.startTimer(this.game.getInitialTime());
     }
 
@@ -72,6 +73,7 @@ public class Controller {
     }
 
     public void loadGame() {
+        this.pauseGame();
         JFileChooser chooser = new JFileChooser();
         if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 
@@ -80,12 +82,17 @@ public class Controller {
                 FileInputStream fis;
                 fis = new FileInputStream(f);
                 ObjectInputStream ois = new ObjectInputStream(fis);
-                this.mineField=(MinePanel) ois.readObject();
+
+                this.mineField = (MinePanel) ois.readObject();
+
                 ois.close();
-                this.containingFrame.setMineField(this.mineField);
+                fis.close();
+                this.game = this.mineField.getGame();
+                this.mineField.clear();
+                this.mineField.init(this.game);
                 this.containingFrame.clear();
+                this.containingFrame.setMineField(this.mineField);
                 this.containingFrame.initComponents();
-                this.startGame();
                 System.out.println(f);
             } catch (Exception e) {
                 // TODO Auto-generated catch block
@@ -93,22 +100,24 @@ public class Controller {
             }
 
         }
+        this.startGame();
 
     }
 
     public void saveGame() {
+        this.pauseGame();
+        this.game.setInitialTime(this.controlInterface.getTime());
         JFileChooser chooser = new JFileChooser();
         if (chooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
 
             try {
-                this.pauseGame();
                 File f = chooser.getSelectedFile();
                 FileOutputStream fos;
                 fos = new FileOutputStream(f);
                 ObjectOutputStream oos = new ObjectOutputStream(fos);
                 oos.writeObject(this.mineField);
                 oos.close();
-                this.resumeGame();
+                fos.close();
                 System.out.println(f);
             } catch (Exception e) {
                 // TODO Auto-generated catch block
@@ -116,6 +125,7 @@ public class Controller {
             }
 
         }
+        this.resumeGame();
     }
 
     public void setControlInterface(ControlInterface controlInterface) {
