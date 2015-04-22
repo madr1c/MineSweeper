@@ -278,13 +278,13 @@ public class Controller {
                     URL url = this.getClass().getResource("/" + "defeat.png");
                     ImageIcon icon = new ImageIcon(url);
                     icon.setImage(icon.getImage().getScaledInstance(80, 80, Image.SCALE_DEFAULT));
-                    reply = JOptionPane.showConfirmDialog(null, "Try again?", "You lose", JOptionPane.YES_NO_OPTION, 2, icon);
+                    reply = JOptionPane.showConfirmDialog(null, "Try again?", "You lose", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icon);
 
                 } else {
-                    URL url = this.getClass().getResource("/" + "defeat.png");
+                    URL url = this.getClass().getResource("/" + "victory.png");
                     ImageIcon icon = new ImageIcon(url);
                     icon.setImage(icon.getImage().getScaledInstance(80, 80, Image.SCALE_DEFAULT));
-                    reply = JOptionPane.showConfirmDialog(null, "Play again?", "You win", JOptionPane.YES_NO_OPTION, 2, icon);
+                    reply = JOptionPane.showConfirmDialog(null, "Play again?", "You win", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icon);
                 }
 
                 // If user wants to play a new {@link model.Game} it will reset
