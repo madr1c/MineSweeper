@@ -27,6 +27,7 @@ import view.MinePanel;
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
+import java.net.URL;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -274,10 +275,16 @@ public class Controller {
                 thisController.pauseGame();
 
                 if (!game.isWon()) {
-                    reply = JOptionPane.showConfirmDialog(null, "Try again?", "You lose", JOptionPane.YES_NO_OPTION);
+                    URL url = this.getClass().getResource("/" + "defeat.png");
+                    ImageIcon icon = new ImageIcon(url);
+                    icon.setImage(icon.getImage().getScaledInstance(80, 80, Image.SCALE_DEFAULT));
+                    reply = JOptionPane.showConfirmDialog(null, "Try again?", "You lose", JOptionPane.YES_NO_OPTION, 2, icon);
 
                 } else {
-                    reply = JOptionPane.showConfirmDialog(null, "Play again?", "You win", JOptionPane.YES_NO_OPTION);
+                    URL url = this.getClass().getResource("/" + "defeat.png");
+                    ImageIcon icon = new ImageIcon(url);
+                    icon.setImage(icon.getImage().getScaledInstance(80, 80, Image.SCALE_DEFAULT));
+                    reply = JOptionPane.showConfirmDialog(null, "Play again?", "You win", JOptionPane.YES_NO_OPTION, 2, icon);
                 }
 
                 // If user wants to play a new {@link model.Game} it will reset

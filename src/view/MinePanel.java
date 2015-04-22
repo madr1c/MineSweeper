@@ -140,8 +140,10 @@ public class MinePanel extends JPanel implements Serializable {
                 (int) tmpDim.getWidth() / this.game.getWidth());
 
         // Calculate fontSize
-        int fontSize = (int) (this.buttonSize.getHeight() / 2);
+        int fontSize =
+                (int)Math.round((this.buttonSize.getHeight() / 2) * java.awt.Toolkit.getDefaultToolkit().getScreenResolution() / 72.0);
         Font font = new Font("serif", Font.BOLD, fontSize);
+
 
         // Iterate trough the {@link model.Field}s of the given {@link model.Game} and connect the
         // {@link view.MinePanel.ObserverButton}s
@@ -287,17 +289,21 @@ public class MinePanel extends JPanel implements Serializable {
         if ("boom".equals(btn.getName())) {
             URL url = this.getClass().getResource("/" + "mine.png");
             btn.setIcon(this.renderCaptionPic(url));
+            btn.setVerticalAlignment(SwingConstants.CENTER);
         } else if ("?".equals(btn.getName())) {
             URL url = this.getClass().getResource("/" + "questionmark.png");
             btn.setIcon(this.renderCaptionPic(url));
+            btn.setVerticalAlignment(SwingConstants.CENTER);
         } else if ("!".equals(btn.getName())) {
             URL url = this.getClass().getResource("/" + "flag.png");
             btn.setIcon(this.renderCaptionPic(url));
+            btn.setVerticalAlignment(SwingConstants.CENTER);
         // If the name is numeric no {@link javax.swing.Icon} is required
         } else if (isNumeric(btn.getName())) {
             btn.setText(btn.getName());
             this.setColor(btn);
             btn.setIcon(null);
+            btn.setVerticalAlignment(SwingConstants.BOTTOM);
         } else {
             btn.setIcon(null);
         }
