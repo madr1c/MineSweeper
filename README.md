@@ -10,4 +10,6 @@ Usage
 --------------
 The Main class is included when you build a .jar file, it should work.
 
-**Note:** This is my first try with Swing and Git and I am always open to suggestions for improvement.
+>**Notes:** 
+>This is my first try with Swing and Git and I am always open to suggestions for improvement.
+>I am not the creator of the pictures in this project. All rights reserved by the respective author.
